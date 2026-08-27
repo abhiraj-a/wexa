@@ -31,7 +31,7 @@ A graph database natively models these relationships. The query traverses the gr
 Requires Java 21 and Maven.
 1. `cd backend`
 2. `mvn spring-boot:run`
-*Note: The application will automatically seed the database with sample data on startup.*
+
 
 ### 3. Frontend (React + Vite)
 Requires Node.js.
@@ -39,6 +39,30 @@ Requires Node.js.
 2. `npm install`
 3. `npm run dev`
 4. Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+### 4. Optional: Seed Sample Data (Cypher)
+If you want to manually seed your database with sample products and categories for testing, you can run this query directly in the CognoDB Cloud console (or any Neo4j client):
+
+```cypher
+// Clear existing data
+MATCH (n) DETACH DELETE n;
+
+// Create Categories
+CREATE (cElectronics:Category {name: 'Electronics'})
+CREATE (cApparel:Category {name: 'Apparel'})
+
+// Create Products
+CREATE (p1:Product {id: 'p1', name: 'Wireless Headphones', price: 199.99, stock: 50, imageUrl: 'https://via.placeholder.com/200', description: 'Noise cancelling headphones'})
+CREATE (p2:Product {id: 'p2', name: 'Smartphone', price: 799.99, stock: 20, imageUrl: 'https://via.placeholder.com/200', description: 'Latest smartphone model'})
+CREATE (p3:Product {id: 'p3', name: 'Cotton T-Shirt', price: 25.00, stock: 100, imageUrl: 'https://via.placeholder.com/200', description: 'Comfortable cotton t-shirt'})
+CREATE (p4:Product {id: 'p4', name: 'Denim Jeans', price: 60.00, stock: 40, imageUrl: 'https://via.placeholder.com/200', description: 'Classic blue denim jeans'})
+
+// Assign Categories
+CREATE (p1)-[:BELONGS_TO]->(cElectronics)
+CREATE (p2)-[:BELONGS_TO]->(cElectronics)
+CREATE (p3)-[:BELONGS_TO]->(cApparel)
+CREATE (p4)-[:BELONGS_TO]->(cApparel);
+```
 
 ## Main Queries Explained
 
